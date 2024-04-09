@@ -19,7 +19,7 @@ body {
     border: 2px solid #f0f0f0;
     align-items: center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
 }
 
 .contents-Left-Container {
@@ -28,7 +28,7 @@ body {
     background-color: #ffffff;
     align-items: center;
     width: 20%;
-    height: 100vh;
+    height: 100%;
 }
 .contents-Right-Container {
     margin: 0px;
@@ -36,5 +36,5 @@ body {
     background-color: #e7ff854d;
     align-items: center;
     width: 80%;
-    height: 100vh;
+    height: 100%;
 }
