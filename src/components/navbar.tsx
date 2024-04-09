@@ -1,11 +1,32 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import Logo from '@/styles/icon/logo';
+import { useRouter } from 'next/router';
 
-export default function navbar() {
+export default function Navbar() {
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push('/');
+    };
     return (
         <div css={container}>
-            <div>
-                <p>albubsa</p>
+            <div className="logo" onClick={() => handleClick()}>
+                <Logo />
+                <svg width="43" height="15" viewBox="0 0 43 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9.41777 0H11.5408V7.4838H9.41777V0ZM10.6788 2.86717H13.4882V4.63283H10.6788V2.86717ZM1.77182 8.08315H11.5408V12.1976H3.91077V13.9795H1.80374V10.6425H9.44969V9.73542H1.77182V8.08315ZM1.80374 13.1533H11.9717V14.838H1.80374V13.1533ZM3.94269 0.437364C6.20934 0.437364 7.88539 1.84665 7.88539 3.83909C7.88539 5.81533 6.20934 7.24082 3.94269 7.24082C1.69201 7.24082 0 5.81533 0 3.83909C0 1.84665 1.69201 0.437364 3.94269 0.437364ZM3.94269 2.17063C2.85726 2.17063 2.05914 2.78618 2.05914 3.83909C2.05914 4.89201 2.85726 5.52376 3.94269 5.52376C5.04409 5.52376 5.84221 4.89201 5.84221 3.83909C5.84221 2.78618 5.04409 2.17063 3.94269 2.17063Z"
+                        fill="#575868"
+                    />
+                    <path
+                        d="M15.2108 0.761339H17.3179V2.65659H20.1272V0.761339H22.2023V7.77538H15.2108V0.761339ZM17.3179 4.29266V6.05831H20.1272V4.29266H17.3179ZM21.7235 3.41793H25.315V5.15119H21.7235V3.41793ZM24.8361 0H26.9591V8.21274H24.8361V0ZM17.1423 8.84449H19.2493V10.189H24.8521V8.84449H26.9591V14.8218H17.1423V8.84449ZM19.2493 11.8413V13.1048H24.8521V11.8413H19.2493Z"
+                        fill="#575868"
+                    />
+                    <path
+                        d="M32.5926 1.15011H34.3165V3.33693C34.3165 7.04644 33.0395 10.5292 30.2461 11.9222L28.9691 10.189C31.4592 9.00648 32.5926 6.12311 32.5926 3.33693V1.15011ZM33.0235 1.15011H34.7156V3.33693C34.7156 6.02592 35.7691 8.7635 38.1315 9.92981L36.8545 11.6469C34.1888 10.27 33.0235 6.93305 33.0235 3.33693V1.15011ZM38.7221 0H40.861V15H38.7221V0ZM40.3822 5.76674H43V7.5648H40.3822V5.76674Z"
+                        fill="#575868"
+                    />
+                </svg>
             </div>
 
             <div className="nav-right">
@@ -50,7 +71,17 @@ const container = css`
     height: 100%;
     justify-content: space-between;
     align-items: center;
-
+    cursor: pointer;
+    .logo {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        p {
+            width: 43px;
+            height: 15px;
+        }
+    }
     input {
         width: 420px;
         height: 40px;
