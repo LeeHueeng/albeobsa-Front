@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 import type { AppProps } from "next/app";
-import Navbar from "@/components/navbar";
-import Leftbar from "@/components/leftbar";
+import Navbar from "@/components/Navbar";
+import Leftbar from "@/components/Leftbar";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,9 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div
-        className={inter.className}
-        style={{ width: "100%", height: "200vh" }}>
+      <div className={inter.className}>
         <div className="nav-barContainer">
           <Navbar />
         </div>

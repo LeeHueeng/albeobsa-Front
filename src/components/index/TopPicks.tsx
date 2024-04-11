@@ -66,7 +66,7 @@ export default function TopPicks() {
 const styles = css`
   margin-top: 100px;
   width: 100%;
-  height: 30%;
+
   .nametop {
     display: flex;
     justify-content: space-between;
@@ -74,10 +74,7 @@ const styles = css`
     gap: 20px;
   }
   .container {
-    margin: 0 auto;
-    padding: 0 15px;
-    width: 90%;
-
+    width: 100%;
     .username_picks {
       font-family: Poppins;
       font-size: 20px;
@@ -89,8 +86,9 @@ const styles = css`
   }
   .Top_Picks {
     display: flex;
+    width: 100%;
     justify-content: space-between;
-    gap: 43px;
+
     .Top_Picks_Item {
       width: 313px;
       height: 164px;

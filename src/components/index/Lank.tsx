@@ -83,7 +83,7 @@ const style = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 100%;
     height: 311px;
     border-radius: 10px;
     border: 2px solid #f0f0f0;

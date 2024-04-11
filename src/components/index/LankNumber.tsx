@@ -108,10 +108,10 @@ const style = css`
     }
   }
   .second {
-    margin: 0;
-    width: 80%;
+    margin: 0px;
+    width: 75%;
     p {
-      margin: 10px 0;
+      margin: 0;
       font-family: Poppins;
       font-size: 13px;
       font-weight: 400;
@@ -134,7 +134,6 @@ const style = css`
     .third-right {
       width: 20%;
       height: 1px;
-      background-color: red;
     }
   }
   .comment {
