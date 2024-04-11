@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
 import Head from "next/head";
 import type { AppProps } from "next/app";
-import Navbar from "@/components/Navbar";
-import Leftbar from "@/components/Leftbar";
+import Navbar from "@/components/navbar";
+import Leftbar from "@/components/leftbar";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
