@@ -36,6 +36,11 @@ const styles = css`
   .community {
     margin-top: 37px;
   }
+  @media (max-width: 800px) {
+    .community {
+      display: none;
+    }
+  }
   .deal {
     width: 100%;
     margin-top: 37px;

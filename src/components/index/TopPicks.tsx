@@ -18,32 +18,32 @@ export default function TopPicks() {
             <path
               d="M19 2.82568H0.75V20.1632H19V2.82568Z"
               stroke="#858585"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M0.75 7.38818H19"
               stroke="#858585"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M5.3125 1V4.65"
               stroke="#858585"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M14.4375 1V4.65"
               stroke="#858585"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M7.13733 13.0786L9.50307 15.6L12.6123 10.125"
               stroke="#858585"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </div>
@@ -51,10 +51,10 @@ export default function TopPicks() {
           <div className="Top_Picks_Item">
             <PickItem />
           </div>
-          <div className="Top_Picks_Item">
+          <div className="Top_Picks_Item hidden-when-smalltow">
             <PickItem />
           </div>
-          <div className="Top_Picks_Item">
+          <div className="Top_Picks_Item hidden-when-small">
             <PickItem />
           </div>
         </div>
@@ -90,11 +90,22 @@ const styles = css`
     justify-content: space-between;
 
     .Top_Picks_Item {
-      width: 313px;
+      width: 100%;
+      max-width: 313px;
       height: 164px;
       border-radius: 10px;
       background-color: white;
       border: 2px solid #f0f0f0;
+    }
+    @media (max-width: 900px) {
+      .hidden-when-small {
+        display: none;
+      }
+    }
+    @media (max-width: 650px) {
+      .hidden-when-smalltow {
+        display: none;
+      }
     }
   }
 `;

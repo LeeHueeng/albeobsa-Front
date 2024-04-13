@@ -35,7 +35,7 @@ export default function Navbar() {
       </div>
 
       <div className="nav-right">
-        <div>
+        <div className="input">
           <input type="text" placeholder="검색" />
         </div>
 
@@ -77,6 +77,7 @@ export default function Navbar() {
 
 const container = css`
   display: flex;
+  padding: 10px 0px;
   width: 80%;
   height: 100%;
   justify-content: space-between;
@@ -92,8 +93,13 @@ const container = css`
       height: 15px;
     }
   }
+  .input {
+    width: 100%;
+    max-width: 1000px;
+    height: 40px;
+  }
   input {
-    width: 420px;
+    width: 100%;
     height: 40px;
     border-radius: 100px;
     border: 1px solid #bceb00;
@@ -102,6 +108,7 @@ const container = css`
     display: flex;
     gap: 50px;
     align-items: center;
+    width: 70%;
   }
   .img-box {
     width: 36px;
@@ -113,5 +120,6 @@ const container = css`
     display: flex;
     gap: 10px;
     align-items: center;
+    white-space: nowrap;
   }
 `;

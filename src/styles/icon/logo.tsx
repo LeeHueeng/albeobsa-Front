@@ -6,7 +6,7 @@ const logoStyles = css`
   height: 32px;
 `;
 
-export default function LogoComponent() {
+export default function LogoComponen() {
   return (
     <svg
       css={logoStyles}

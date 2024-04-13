@@ -41,32 +41,40 @@ export default function Lank() {
 
           <div className="lanklist">
             <div className="list">
-              <LankNumber />
-              <LankNumber />
-              <LankNumber />
+              <div>
+                <LankNumber />
+              </div>
+              <div className="hidden-second">
+                <LankNumber />
+              </div>
+              <div className="hidden-first">
+                <LankNumber />
+              </div>
             </div>
-            <svg
-              width="44"
-              height="44"
-              viewBox="0 0 44 44"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <circle cx="22" cy="22" r="22" fill="#BCEB00" />
-              <path
-                d="M22 15L29 22L22 29"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M15 22H27.25"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+            <div className="svg-container">
+              <svg
+                width="44"
+                height="44"
+                viewBox="0 0 44 44"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <circle cx="22" cy="22" r="22" fill="#BCEB00" />
+                <path
+                  d="M22 15L29 22L22 29"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M15 22H27.25"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
@@ -118,13 +126,28 @@ const style = css`
     justify-content: space-between;
     width: 100%;
     height: 200px;
-    gap: 100px;
     align-items: center;
   }
   .list {
-    whidth: 100%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     gap: 100px;
+  }
+  .svg-container {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  @media (max-width: 1100px) {
+    .hidden-first {
+      display: none;
+    }
+  }
+  @media (max-width: 795px) {
+    .hidden-second {
+      display: none;
+    }
   }
 `;
