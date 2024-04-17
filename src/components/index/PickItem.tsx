@@ -3,19 +3,25 @@ import { css } from "@emotion/react";
 import React from "react";
 import Image from "next/image";
 
-export default function PickItem() {
+interface PickItemProps {
+  img: string;
+  name: string;
+  percent: number;
+}
+
+const PickItem: React.FC<PickItemProps> = ({ img, name, percent }) => {
   return (
     <div css={style}>
       <div className="top">...</div>
       <div className="contents">
         <div className="left">
-          <Image src="/sell.png" width={100} height={100} alt="상품 이미지" />
+          <Image src={img} width={100} height={100} alt={img} />
         </div>
         <div className="right">
-          <div className="left-top">상품 이름이나 게시물 제목</div>
+          <div className="left-top">{name}</div>
           <div className="left-bottom">
             <div className="left-bottom-left">
-              22.8%
+              {percent}%
               <svg
                 width="7"
                 height="4"
@@ -62,7 +68,10 @@ export default function PickItem() {
       </div>
     </div>
   );
-}
+};
+
+export default PickItem;
+
 const style = css`
   height: 100%;
   display: flex;

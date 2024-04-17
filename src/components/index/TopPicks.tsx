@@ -1,9 +1,28 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PickItem from "./PickItem";
+import axios from "axios";
+interface Item {
+  img: string;
+  name: string;
+  percent: number;
+}
 
 export default function TopPicks() {
+  const [data, setData] = useState<Item[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/hello")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, []);
+
   return (
     <div css={styles}>
       <div className="container">
@@ -48,15 +67,15 @@ export default function TopPicks() {
           </svg>
         </div>
         <div className="Top_Picks">
-          <div className="Top_Picks_Item">
-            <PickItem />
-          </div>
-          <div className="Top_Picks_Item hidden-when-smalltow">
-            <PickItem />
-          </div>
-          <div className="Top_Picks_Item hidden-when-small">
-            <PickItem />
-          </div>
+          {data.map((item, index) => (
+            <div key={index} className="Top_Picks_Item">
+              <PickItem
+                img={item.img}
+                name={item.name}
+                percent={item.percent}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
