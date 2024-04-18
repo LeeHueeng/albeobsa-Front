@@ -1,5 +1,12 @@
-import React from 'react';
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
+import React from "react";
+import Community from "@/components/index/community";
 
 export default function community() {
-    return <div>community</div>;
+  return (
+    <div>
+      <Community />
+    </div>
+  );
 }

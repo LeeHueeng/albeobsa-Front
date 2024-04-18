@@ -3,20 +3,38 @@ import { css } from "@emotion/react";
 import Image from "next/image";
 import React from "react";
 
-export default function LankNumber() {
+interface LankNumberProps {
+  id: number;
+  img: string;
+  name: string;
+  shoppingmall: string;
+  community: string;
+  comments: number;
+  likes: number;
+}
+
+const LankNumber: React.FC<LankNumberProps> = ({
+  id,
+  img,
+  name,
+  shoppingmall,
+  community,
+  comments,
+  likes,
+}) => {
   return (
     <div css={style}>
       <div className="top">
-        <p>1위</p>
-        <div className="shopingsite">쿠팡</div>
-        <div className="communitysite">뽐뿌</div>
+        <p>{id + 1}위</p>
+        <div className="shopingsite">{shoppingmall}</div>
+        <div className="communitysite">{community}</div>
       </div>
       <div className="second">
-        <p>Y700 2세대, 샤오신패드 프로 12.7 (카카오페이 32만, 21.2만 / 무료)</p>
+        <p>{name}</p>
       </div>
       <div className="third">
         <div className="third-left">
-          <Image src="/sell.png" width={100} height={100} alt="상품 이미지" />
+          <Image src={img} width={100} height={100} alt="상품 이미지" />
         </div>
         <div className="third-right">
           <div className="comment">
@@ -40,19 +58,20 @@ export default function LankNumber() {
               />
             </svg>
 
-            <p>35</p>
+            <p>{comments} </p>
           </div>
           <div className="like">
             <Image src="/like.png" width={15} height={15} alt="좋아요" />
 
-            <p>50</p>
+            <p>{likes}</p>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
+export default LankNumber;
 const style = css`
   width: 250px;
   height: 230px;

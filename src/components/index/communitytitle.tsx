@@ -2,7 +2,8 @@
 import { css } from "@emotion/react";
 import React from "react";
 import Image from "next/image";
-
+import { useEffect } from "react";
+import axios from "axios";
 const titlelist = [
   {
     date: "2024/04/01",
@@ -39,6 +40,16 @@ const titlelist = [
 ];
 
 export default function communitytitle() {
+  useEffect(() => {
+    axios
+      .get(process.env.NEXT_PUBLIC_API_URL + "/api/member/join ")
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("게시글 긁어오기 실패 ", error);
+      });
+  }, []);
   return (
     <div css={style}>
       <table>

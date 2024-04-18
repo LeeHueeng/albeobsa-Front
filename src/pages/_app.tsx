@@ -33,7 +33,7 @@ const contentsLeftContainer = css`
   margin: 0px;
   background-color: white;
   width: 20%;
-  @media (max-width: 1400px) {
+  @media (max-width: 600px) {
     display: none;
   }
 `;

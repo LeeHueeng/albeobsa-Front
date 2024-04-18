@@ -29,6 +29,7 @@ const styles = css`
   height: 100%;
   .topicks {
     width: 100%;
+    height: 100%;
   }
   .second {
     margin-top: 37px;

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import PickItem from "./PickItem";
 import axios from "axios";
 interface Item {
@@ -11,16 +11,34 @@ interface Item {
 
 export default function TopPicks() {
   const [data, setData] = useState<Item[]>([]);
+  const [visibleCount, setVisibleCount] = useState(3);
 
   useEffect(() => {
     axios
-      .get("/api/hello")
+      .get("/api/topPicks")
       .then((response) => {
         setData(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data: ", error);
       });
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth < 650) {
+        setVisibleCount(1);
+      } else if (screenWidth < 900) {
+        setVisibleCount(2);
+      } else {
+        setVisibleCount(3);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
@@ -67,7 +85,7 @@ export default function TopPicks() {
           </svg>
         </div>
         <div className="Top_Picks">
-          {data.map((item, index) => (
+          {data.slice(0, visibleCount).map((item, index) => (
             <div key={index} className="Top_Picks_Item">
               <PickItem
                 img={item.img}
