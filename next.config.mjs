@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['cdn.algumon.com']
+    domains: ['cdn.algumon.com', 'img.ruliweb.com', 'cdn2.ppomppu.co.kr']
   },
 };
 

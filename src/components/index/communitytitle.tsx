@@ -40,16 +40,6 @@ const titlelist = [
 ];
 
 export default function communitytitle() {
-  useEffect(() => {
-    axios
-      .get(process.env.NEXT_PUBLIC_API_URL + "/api/member/join ")
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.error("게시글 긁어오기 실패 ", error);
-      });
-  }, []);
   return (
     <div css={style}>
       <table>

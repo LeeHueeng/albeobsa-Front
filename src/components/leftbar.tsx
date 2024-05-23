@@ -37,7 +37,13 @@ export default function Leftbar() {
                 : undefined
             }
             onClick={() => handleClick(category.path)}>
-            <div className="icon">{category.icon}</div>
+            <div
+              className="icon"
+              css={
+                router.pathname === category.path ? activeIconStyle : undefined
+              }>
+              {category.icon}
+            </div>
             {category.name}
           </li>
         ))}
@@ -81,5 +87,12 @@ const leftbarstyle = css`
   }
 `;
 const activeCategoryStyle = css`
-  background-color: #e7ff85;
+  background-color: #e0ceff;
+`;
+const activeIconStyle = css`
+  svg {
+    path {
+      stroke: black;
+    }
+  }
 `;

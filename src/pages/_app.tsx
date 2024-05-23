@@ -1,10 +1,13 @@
 /** @jsxImportSource @emotion/react */
+
 import { css } from "@emotion/react";
 import Head from "next/head";
 import type { AppProps } from "next/app";
 import Navbar from "@/components/navbar";
 import Leftbar from "@/components/leftbar";
+import MobileView from "@/components/MobileView";
 import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,7 +45,6 @@ const contentsRightContainer = css`
   margin: 0px;
   padding: 0px;
   height: 100%;
-  background-color: #e7ff854d;
   border: 1px solid #f0f0f0;
   align-items: center;
   width: 100%;
@@ -50,6 +52,18 @@ const contentsRightContainer = css`
 `;
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <>
       <Head>
@@ -58,19 +72,23 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div css={appContainer} className={inter.className}>
-        <div css={navBarContainer}>
-          <Navbar />
-        </div>
-        <div css={contentsContainer}>
-          <div css={contentsLeftContainer}>
-            <Leftbar />
+      {isMobile ? (
+        <MobileView />
+      ) : (
+        <div css={appContainer} className={inter.className}>
+          <div css={navBarContainer}>
+            <Navbar />
           </div>
-          <div css={contentsRightContainer}>
-            <Component {...pageProps} />
+          <div css={contentsContainer}>
+            <div css={contentsLeftContainer}>
+              <Leftbar />
+            </div>
+            <div css={contentsRightContainer}>
+              <Component {...pageProps} />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

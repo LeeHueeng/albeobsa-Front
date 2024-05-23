@@ -101,7 +101,6 @@ export default function TopPicks() {
 }
 
 const styles = css`
-  margin-top: 100px;
   width: 100%;
 
   .nametop {

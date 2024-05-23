@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 interface PickItemProps {
@@ -10,9 +10,23 @@ interface PickItemProps {
 }
 
 const PickItem: React.FC<PickItemProps> = ({ img, name, percent }) => {
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <div css={style}>
-      <div className="top">...</div>
+      <div
+        className="top"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}>
+        {isHovered && (
+          <div className="dropdown">
+            <ul>
+              <li onClick={() => alert("신고 클릭됨")}>신고</li>
+              <li onClick={() => alert("삭제 클릭됨")}>삭제</li>
+            </ul>
+          </div>
+        )}
+        <span>...</span>
+      </div>
       <div className="contents">
         <div className="left">
           <Image src={img} width={100} height={100} alt={img} />
@@ -20,22 +34,7 @@ const PickItem: React.FC<PickItemProps> = ({ img, name, percent }) => {
         <div className="right">
           <div className="left-top">{name}</div>
           <div className="left-bottom">
-            <div className="left-bottom-left">
-              {percent}%
-              <svg
-                width="7"
-                height="4"
-                viewBox="0 0 7 4"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M6.2744 3.17075C6.55728 3.49404 6.3277 4 5.89812 4H1.10188C0.672305 4 0.442716 3.49404 0.725595 3.17075L3.12371 0.430043C3.32292 0.20238 3.67708 0.20238 3.87629 0.430044L6.2744 3.17075Z"
-                  fill="#F85D5D"
-                />
-              </svg>
-            </div>
+            <div className="left-bottom-left">{percent}%</div>
             <div className="left-bottom-right">
               <svg
                 width="63"
@@ -79,16 +78,46 @@ const style = css`
   align-items: center;
   border: 2px solid #f0f0f0;
   border-radius: 10px;
+  position: relative;
 
   .top {
     width: 90%;
     text-align: right;
     margin-bottom: 11px;
+    position: relative;
   }
+
+  .dropdown {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        padding: 8px 12px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #a775ff;
+          color: white;
+        }
+      }
+    }
+  }
+
   .contents {
     display: flex;
     justify-content: space-between;
     gap: 10px;
+
     .left {
       width: 100px;
       height: 100px;
@@ -96,6 +125,7 @@ const style = css`
       border: 2px solid #f0f0f0;
       overflow: hidden;
     }
+
     .right {
       width: 128px;
       height: 100px;
@@ -108,6 +138,7 @@ const style = css`
         text-align: left;
         margin-bottom: 30px;
       }
+
       .left-bottom {
         display: flex;
         gap: 10px;
@@ -117,6 +148,7 @@ const style = css`
         .left-bottom-left {
           color: red;
         }
+
         .left-bottom-right {
           width: 50%;
           height: 100%;

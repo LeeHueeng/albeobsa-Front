@@ -95,7 +95,7 @@ export default function Lank() {
                 viewBox="0 0 44 44"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
-                <circle cx="22" cy="22" r="22" fill="#BCEB00" />
+                <circle cx="22" cy="22" r="22" fill="#A775FF" />
                 <path
                   d="M22 15L29 22L22 29"
                   stroke="white"
