@@ -71,7 +71,7 @@ const marketData = [
 ];
 
 export default function Freeboard() {
-  const handleClick = (id) => {
+  const handleClick = (id: any) => {
     alert(`글 ID: ${id}`);
     // 여기에 라우팅 로직 추가
     // 예: history.push(`/post/${id}`);
