@@ -2,15 +2,18 @@
 
 import { css } from "@emotion/react";
 import React from "react";
+import { useRouter } from 'next/router'; // Next.js 라우터 사용
 
 const style = css`
   display: flex;
   justify-content: space-between;
-  width: calc(100% - 60px);
+  width: 100%;
   height: 80%;
   border: 2px solid #f0f0f0;
   border-radius: 10px;
   margin: 30px;
+  box-sizing: border-box;
+  
   .contents,
   .second {
     flex: 1;
@@ -21,13 +24,16 @@ const style = css`
     padding: 20px;
     box-sizing: border-box;
     border-radius: 10px;
+    margin: 0 10px;
   }
+  
   .list-item {
     width: 100%;
     padding: 10px 0;
   }
+  
   .list-item h3 {
-    font-family: Poppins;
+    font-family: 'Poppins', sans-serif;
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
@@ -41,11 +47,13 @@ const style = css`
     cursor: pointer;
     transition: background-color 0.3s;
   }
+  
   .list-item h3:hover {
     background-color: #e0e0e0;
   }
+  
   h2 {
-    font-family: Poppins;
+    font-family: 'Poppins', sans-serif;
     font-size: 16px;
     font-weight: 700;
     line-height: 24px;
@@ -71,10 +79,11 @@ const marketData = [
 ];
 
 export default function Freeboard() {
-  const handleClick = (id: any) => {
+  const router = useRouter();
+
+  const handleClick = (id: number) => {
     alert(`글 ID: ${id}`);
-    // 여기에 라우팅 로직 추가
-    // 예: history.push(`/post/${id}`);
+    router.push(`/post/${id}`);
   };
 
   return (
