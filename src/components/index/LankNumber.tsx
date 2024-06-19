@@ -4,39 +4,54 @@ import Image from "next/image";
 import React from "react";
 
 interface LankNumberProps {
-  id: number;
-  img: string;
+  rank: number;
+  image: string;
   name: string;
-  shoppingmall: string;
-  community: string;
-  comments: number;
-  likes: number;
+  label: string;
+  subLabel: string;
+  commentCnt: number;
+  recommendCnt: number;
+  title: string;
+  dateTime: string;
+  views: number;
 }
 
 const LankNumber: React.FC<LankNumberProps> = ({
-  id,
-  img,
+  rank,
+  image,
   name,
-  shoppingmall,
-  community,
-  comments,
-  likes,
+  label,
+  subLabel,
+  commentCnt,
+  recommendCnt,
+  title,
+  dateTime,
+  views,
 }) => {
   return (
     <div css={style}>
       <div className="top">
-        <p>{id + 1}위</p>
-        <div className="shopingsite">{shoppingmall}</div>
-        <div className="communitysite">{community}</div>
+        <p>{rank}위</p>
+        <div className="shopping-site">{label}</div>
+        <div className="community-site">{subLabel}</div>
       </div>
       <div className="second">
         <p>{name}</p>
       </div>
       <div className="third">
         <div className="third-left">
-          <Image src={img} width={100} height={100} alt="상품 이미지" />
+          <Image src={image} width={100} height={100} alt="상품 이미지" />
         </div>
         <div className="third-right">
+          <div className="title">
+            <p>{title}</p>
+          </div>
+          <div className="date">
+            <p>{dateTime}</p>
+          </div>
+          <div className="views">
+            <p>{views} views</p>
+          </div>
           <div className="comment">
             <svg
               width="17"
@@ -57,8 +72,7 @@ const LankNumber: React.FC<LankNumberProps> = ({
                 strokeLinejoin="round"
               />
             </svg>
-
-            <p>{comments} </p>
+            <p>{commentCnt}</p>
           </div>
           <div className="like">
             <svg
@@ -88,8 +102,7 @@ const LankNumber: React.FC<LankNumberProps> = ({
                 />
               </defs>
             </svg>
-
-            <p>{likes}</p>
+            <p>{recommendCnt}</p>
           </div>
         </div>
       </div>
@@ -98,11 +111,11 @@ const LankNumber: React.FC<LankNumberProps> = ({
 };
 
 export default LankNumber;
+
 const style = css`
   width: 250px;
   height: 230px;
   border-radius: 10px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -121,7 +134,7 @@ const style = css`
       color: #a775ff;
       margin: 0;
     }
-    .shopingsite {
+    .shopping-site {
       width: 55px;
       height: 28px;
       background-color: #a775ff;
@@ -136,8 +149,8 @@ const style = css`
       line-height: 18px;
       text-align: left;
     }
-    .communitysite {
-      width: 55px;
+    .community-site {
+      width: 70px;
       height: 28px;
       border-radius: 50px;
       background-color: #c4c4c4;
@@ -164,9 +177,8 @@ const style = css`
       text-align: left;
     }
   }
-
   .third {
-    width: 80%;
+    width: 100%;
     display: flex;
     gap: 10px;
     .third-left {
@@ -177,8 +189,21 @@ const style = css`
       overflow: hidden;
     }
     .third-right {
-      width: 20%;
+      width: 100%;
       height: 1px;
+    }
+    .title,
+    .date,
+    .views {
+      margin: 0;
+      p {
+        margin: 0;
+        font-family: Poppins;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+        text-align: left;
+      }
     }
   }
   .comment {

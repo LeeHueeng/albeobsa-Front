@@ -1,15 +1,27 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import React from "react";
+import { useRouter } from "next/router";
 import Community from "@/components/index/community";
 import Freeboard from "@/components/community/freeboard";
 import Alddle from "@/components/community/alddle";
 
-export default function community() {
+export default function CommunityPage() {
+  const router = useRouter();
+
+  const handleWriteClick = () => {
+    router.push("/posts/new");
+  };
+
   return (
     <div css={style}>
+      <div className="write-button-container">
+        <button onClick={handleWriteClick} className="write-button">
+          글쓰기
+        </button>
+      </div>
       <div className="constents">
-        <Community />
+        <Alddle />
       </div>
       <div className="second">
         <Freeboard />
@@ -37,5 +49,25 @@ const style = css`
     gap: 10px;
     margin-top: 37px;
     justify-content: center;
+  }
+  .write-button-container {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+    margin-right: 10%;
+  }
+  .write-button {
+    width: 134px;
+    height: 42px;
+    background-color: #995dff;
+    border-radius: 100px;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: center;
+    color: white;
+    border: none;
+    cursor: pointer;
   }
 `;

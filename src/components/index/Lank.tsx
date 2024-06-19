@@ -6,38 +6,58 @@ import axios from "axios";
 
 interface Item {
   id: number;
-  img: string;
+  image: string;
   name: string;
-  shoppingmall: string;
-  community: string;
-  comments: number;
-  likes: number;
+  label: string;
+  subLabel: string; // subLabel 속성 추가
+  commentCnt: number;
+  recommendCnt: number;
+  title: string;
+  dateTime: string;
+  views: number;
 }
+
 export default function Lank() {
   const [data, setData] = useState<Item[]>([]);
   const [visibleCount, setVisibleCount] = useState(3);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async (page: number) => {
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/crawling/ranking?page=${page}`;
+    console.log("서버에 데이터 요청을 시작합니다. 랭킹 페이지:", page);
+
+    setLoading(true);
+
+    try {
+      const response = await axios.get<Item[]>(apiUrl);
+      console.log("서버 응답:", response.data);
+      setData((prevData) => [...prevData, ...response.data]);
+      console.log("랭킹 데이터 처리");
+    } catch (error) {
+      console.error("랭킹 긁어오기 실패", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    axios
-      .get("/api/Lank")
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: ", error);
-      });
-    function handleResize() {
+    fetchData(page);
+  }, [page]);
+
+  useEffect(() => {
+    const handleResize = () => {
       const width = window.innerWidth;
       if (width < 550) {
-        setVisibleCount(3);
-      } else if (width < 800) {
         setVisibleCount(1);
-      } else if (width < 1200) {
+      } else if (width < 800) {
         setVisibleCount(2);
-      } else if (width < 1600) {
+      } else if (width < 1200) {
         setVisibleCount(3);
+      } else if (width < 1600) {
+        setVisibleCount(4);
       }
-    }
+    };
 
     window.addEventListener("resize", handleResize);
     handleResize();
@@ -47,10 +67,32 @@ export default function Lank() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight - 10 &&
+        !loading
+      ) {
+        console.log("페이지 끝에 도달");
+        setLoading(true);
+        setTimeout(() => {
+          setPage((prevPage) => prevPage + 1);
+        }, 5000); // 5초 딜레이
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [loading]);
+
   return (
     <div css={style}>
-      <div className="contanier">
-        <div className="contanierin">
+      <div className="container">
+        <div className="container-in">
           <div className="tops">
             <p>랭킹</p>
             <svg
@@ -84,9 +126,12 @@ export default function Lank() {
 
           <div className="lanklist">
             <div className="list">
-              {data.slice(0, visibleCount).map((item) => (
-                <LankNumber key={item.id} {...item} />
-              ))}
+              {data.length > 0 &&
+                data
+                  .slice(0, visibleCount)
+                  .map((item, index) => (
+                    <LankNumber key={item.id} rank={index + 1} {...item} />
+                  ))}
             </div>
             <div className="svg-container">
               <svg
@@ -120,12 +165,12 @@ export default function Lank() {
 }
 
 const style = css`
-display: flex;
-align-items: center;
-justify-content: center;
-height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
 
-  .contanier {
+  .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -141,7 +186,6 @@ height: auto;
     line-height: 24px;
     text-align: left;
     overflow: hidden;
-
   }
   .tops {
     width: 100%;
@@ -152,9 +196,9 @@ height: auto;
       margin-left: 20px;
     }
   }
-  .contanierin {
+  .container-in {
     width: 90%;
-    height: auto; 
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -190,19 +234,19 @@ height: auto;
     }
   }
   @media (max-width: 550px) {
-    .list{
+    .list {
       flex-direction: column;
       justify-content: center;
       width: 100%;
       align-items: center;
     }
-    .lanklist{
+    .lanklist {
       flex-direction: column;
       justify-content: center;
     }
-    .tops{
+    .tops {
       display: none;
     }
     height: 800px;
-   
+  }
 `;

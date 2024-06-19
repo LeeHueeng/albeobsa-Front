@@ -16,12 +16,16 @@ interface HotboxProps {
     unrecommendCnt: number;
     commentCnt: number;
     open: boolean;
+    subLabel: string;
   };
+  rank: number;
 }
 
-const Hotbox: React.FC<HotboxProps> = ({ deal }) => {
+const Hotbox: React.FC<HotboxProps> = ({ deal, rank }) => {
   return (
     <div css={style}>
+      {rank !== 0 && <div className="rank">{rank}위</div>}
+
       <div className="contents">
         <div className="left">
           <a href={deal.link} target="_blank" rel="noopener noreferrer">
@@ -32,7 +36,7 @@ const Hotbox: React.FC<HotboxProps> = ({ deal }) => {
           <div className="rightcontents">
             <div className="rightleft">
               <div className="buttonset">
-                <button className="color2">쿠팡</button>
+                <button className="color2">{deal.subLabel}</button>
                 <button className="color1">{deal.label}</button>
               </div>
               <div className="rightcontentsright">
@@ -183,6 +187,13 @@ const style = css`
   align-items: center;
   gap: 10px;
 
+  .rank {
+    font-size: 24px;
+    font-weight: bold;
+    color: #a775ff;
+    margin-left: 50px;
+  }
+
   .contents {
     display: flex;
     align-items: center;
@@ -232,6 +243,7 @@ const style = css`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
     height: 100%;
     .rightleft {
       display: flex;
@@ -242,8 +254,14 @@ const style = css`
       font-weight: 700;
       line-height: 24px;
       text-align: left;
+
       .color1 {
-        background-color: #bceb00;
+        background-color: #c4c4c4;
+        color: white;
+      }
+      .color2 {
+        background-color: #a775ff;
+        color: white;
       }
       button {
         background-color: #f0f0f0;

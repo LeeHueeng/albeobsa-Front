@@ -16,6 +16,7 @@ interface HotDeal {
   unrecommendCnt: number;
   commentCnt: number;
   open: boolean;
+  subLabel: string;
 }
 
 export default function Ranking() {
@@ -40,7 +41,7 @@ export default function Ranking() {
   return (
     <div css={style}>
       {hotDeals.map((deal, index) => (
-        <Hotbox key={index} deal={deal} />
+        <Hotbox key={index} deal={deal} rank={index + 1} />
       ))}
     </div>
   );

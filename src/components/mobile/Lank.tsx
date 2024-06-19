@@ -49,7 +49,19 @@ export default function Lank() {
   return (
     <div>
       {data.slice(0, visibleCount).map((item) => (
-        <LankNumber key={item.id} {...item} />
+        <LankNumber
+          rank={0}
+          image={""}
+          label={""}
+          subLabel={""}
+          commentCnt={0}
+          recommendCnt={0}
+          title={""}
+          dateTime={""}
+          views={0}
+          key={item.id}
+          {...item}
+        />
       ))}
     </div>
   );

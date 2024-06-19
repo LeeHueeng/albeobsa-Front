@@ -1,73 +1,112 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React from "react";
-import Image from "next/image";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import axios from "axios";
-const titlelist = [
-  {
-    date: "2024/04/01",
-    img: "/ad.png",
-    nickname: "후엥",
-    title: "커뮤니티 인기글",
-    comment: 10,
-    views: "조회수",
-  },
-  {
-    date: "2024/04/01",
-    img: "/ad.png",
-    nickname: "뿌엥",
-    title: "커뮤니티 인기글",
-    comment: 10,
-    views: "조회수",
-  },
-  {
-    date: "2024/04/01",
-    img: "/ad.png",
-    nickname: "즐거운 오랑우탄가락지",
-    title: "커뮤니티 인기글",
-    comment: 10,
-    views: "조회수",
-  },
-  {
-    date: "2024/04/01",
-    img: "/ad.png",
-    nickname: "행복한 오징어대가리",
-    title: "커뮤니티 인기글",
-    comment: 10,
-    views: "조회수",
-  },
-];
 
-export default function communitytitle() {
+interface Title {
+  id: number;
+  createdAt: string;
+  img: string;
+  memberName: string;
+  title: string;
+  commentCnt: number;
+  views: string;
+}
+const reasons = [
+  { value: "INAPPROPRIATE_CONTENT", label: "부적절한 내용" },
+  { value: "MISINFORMATION", label: "허위 정보" },
+  { value: "SPAM", label: "스팸" },
+  { value: "OTHER", label: "기타" },
+];
+export default function CommunityTitle() {
+  const [titleList, setTitleList] = useState<Title[]>([]);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [reportReason, setReportReason] = useState<string>(
+    "INAPPROPRIATE_CONTENT"
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/boards`,
+          {
+            params: {
+              sort: "createdAt,desc", // 최신순으로 정렬
+            },
+          }
+        );
+        if (response.data && Array.isArray(response.data.content)) {
+          setTitleList(response.data.content);
+          console.log(response.data.content);
+        } else {
+          console.error("Unexpected data format:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleReport = async (boardId: number) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/reports/${boardId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: { reason: reportReason },
+        }
+      );
+      console.log("Report response:", response);
+      alert("신고가 접수되었습니다.");
+    } catch (error: any) {
+      console.error("Error reporting post:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      } else if (error.request) {
+        console.error("Request data:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+      alert("신고 접수에 실패했습니다.");
+    }
+  };
   return (
     <div css={style}>
       <table>
-        <tbody>
+        <thead>
           <tr className="name_title">
-            <td>날짜</td>
-            <td className="nicknames">작성자</td>
-            <td className="titles">제목</td>
-            <td>댓글</td>
-            <td></td>
+            <th>날짜</th>
+            <th className="nicknames">작성자</th>
+            <th className="titles">제목</th>
+            <th>댓글</th>
+            <th></th>
           </tr>
-          {titlelist.map((title, index) => (
-            <tr key={index}>
-              <td className="left">{title.date}</td>
-              <td className="nickname">
-                <Image
-                  src={title.img}
-                  width={30}
-                  height={30}
-                  alt="상품 이미지"
-                />
-                {title.nickname}
+        </thead>
+        <tbody>
+          {titleList.slice(0, 5).map((title, index) => (
+            <tr key={title.id}>
+              <td className="left">{title.createdAt}</td>
+              <td className="nickname">{title.memberName}</td>
+              <td className="titles">
+                <Link href={`/posts/${title.id}`}>{title.title}</Link>
               </td>
-              <td className="titles">{title.title}</td>
               <td className="comment">
-                <div className="circle">{title.comment}</div>{" "}
+                <div className="circle">{title.commentCnt}</div>
               </td>
-              <td className="right">
+              <td
+                className="right"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}>
                 <svg
                   width="16"
                   height="4"
@@ -87,6 +126,20 @@ export default function communitytitle() {
                     fill="#858585"
                   />
                 </svg>
+                {hoveredIndex === index && (
+                  <div className="report-container">
+                    <select
+                      value={reportReason}
+                      onChange={(e) => setReportReason(e.target.value)}>
+                      {reasons.map((reason) => (
+                        <option key={reason.value} value={reason.value}>
+                          {reason.label}
+                        </option>
+                      ))}
+                    </select>
+                    <button onClick={() => handleReport(title.id)}>신고</button>
+                  </div>
+                )}
               </td>
             </tr>
           ))}
@@ -139,14 +192,20 @@ const style = css`
       width: 60px;
     }
     .right {
+      position: relative;
       border-radius: 0px 100px 100px 0px;
       border: 1px solid #f0f0f0;
       border-left: 0;
       width: 10px;
+
+      svg {
+        cursor: pointer;
+      }
     }
     .nickname {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       width: 180px;
     }
@@ -163,7 +222,7 @@ const style = css`
       width: 20px;
       height: 20px;
       border-radius: 50%;
-      background-color: #bceb00;
+      background-color: #e0ceff;
       font-family: Poppins;
       font-size: 8px;
       line-height: 12px;
@@ -175,6 +234,34 @@ const style = css`
     }
     img {
       border-radius: 50%;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .report-container {
+      position: absolute;
+      top: 0px;
+      right: 0;
+      padding: 5px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      select {
+        margin-bottom: 5px;
+      }
+
+      button {
+        padding: 5px 10px;
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 10px;
+      }
     }
   }
 `;

@@ -8,6 +8,7 @@ import Leftbar from "@/components/leftbar";
 import MobileView from "@/components/MobileView";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
+import "react-quill/dist/quill.snow.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

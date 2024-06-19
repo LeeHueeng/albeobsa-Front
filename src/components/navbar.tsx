@@ -15,7 +15,7 @@ interface User {
 export default function Navbar() {
   const router = useRouter();
   const [search, setSearch] = useState("");
-  const [user, setUser] = useState<User[]>([]);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menu, setMenu] = useState(false);
 
@@ -32,8 +32,10 @@ export default function Navbar() {
     }
   };
 
-  const handleClicks = (path: string) => {
-    router.push(path);
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    setIsLoggedIn(false);
+    router.push("/");
   };
 
   const toggleMenu = () => {
@@ -44,11 +46,22 @@ export default function Navbar() {
   const handleClick = () => {
     router.push("/");
   };
+  const handleSearch = () => {
+    if (search.trim()) {
+      router.push(`/search/${search}`);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
       setIsLoggedIn(true);
+      const email = localStorage.getItem("email");
+      const name = localStorage.getItem("name");
+      const picture = localStorage.getItem("picture");
+      if (email && name && picture) {
+        setUser({ email, name, img: picture });
+      }
     }
   }, []);
 
@@ -67,9 +80,22 @@ export default function Navbar() {
             }
           );
 
-          console.log("로그인 성공", code);
-          localStorage.setItem("authToken", response.data.token);
+          console.log("로그인 성공", response);
+          localStorage.setItem("authToken", response.data.tokens.accessToken);
+          localStorage.setItem(
+            "refreshToken",
+            response.data.tokens.refreshToken
+          );
+          localStorage.setItem("grantType", response.data.tokens.grantType);
+          localStorage.setItem("email", response.data.memberDTO.email);
+          localStorage.setItem("name", response.data.memberDTO.name);
+          localStorage.setItem("picture", response.data.memberDTO.picture);
           setIsLoggedIn(true);
+          setUser({
+            email: response.data.memberDTO.email,
+            name: response.data.memberDTO.name,
+            img: response.data.memberDTO.picture,
+          });
           router.push("/");
         } catch (error) {
           console.log("로그인 실패", code);
@@ -128,20 +154,23 @@ export default function Navbar() {
           <input
             type="text"
             placeholder="검색"
+            value={search}
             onChange={(event) => setSearch(event.target.value)}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                handleSearch();
+              }
+            }}
           />
         </div>
-        {isLoggedIn && (
-          <div className="user-box">
+        <button onClick={handleSearch}>검색</button>
+
+        {isLoggedIn && user && (
+          <div className="user-box" onClick={handleLogout}>
             <div className="img-box">
-              <Image
-                src={user[0].img}
-                width={36}
-                height={36}
-                alt="user profile"
-              />
+              <Image src={user.img} width={36} height={36} alt="user profile" />
             </div>
-            {user[0].name}
+            {user.name}
           </div>
         )}
 
@@ -201,7 +230,6 @@ export default function Navbar() {
     </div>
   );
 }
-
 const container = css`
   display: flex;
   padding: 10px 62px;
@@ -210,7 +238,16 @@ const container = css`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  
+  button {
+    align-items: center;
+    background-color: #995dff;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    width: 100px;
+    height: 40px;
+  }
 
   .slide-menu {
     display: flex;
@@ -220,12 +257,12 @@ const container = css`
     align-items: center;
     cursor: pointer;
     position: fixed;
-    width: 250px; 
+    width: 250px;
     background-color: white;
     top: 52px;
     right: -250px;
-    transition: right 0.3s; 
-    z-index: 1000; 
+    transition: right 0.3s;
+    z-index: 1000;
   }
   ul {
     list-style: none;
@@ -254,11 +291,10 @@ const container = css`
     margin-right: 10px;
   }
 
-
   .slide-menu.open {
     right: 0;
   }
-  
+
   .nav-rightnext {
     display: none;
     cursor: pointer;
@@ -292,7 +328,7 @@ const container = css`
     width: 100%;
     height: 40px;
     border-radius: 100px;
-    border: 1px solid #995DFF;
+    border: 1px solid #995dff;
   }
   .nav-right {
     display: flex;
@@ -318,7 +354,7 @@ const container = css`
     justify-content: center;
     gap: 10px;
     align-items: center;
-    background-color: #995DFF;
+    background-color: #995dff;
     color: white;
     width: 400px;
     height: 42px;
@@ -335,14 +371,15 @@ const container = css`
   .nav-rightnext {
     display: none;
     cursor: pointer;
-  } 
+  }
   @media (max-width: 550px) {
-    .nav-right{
+    .nav-right {
       display: none;
     }
     .nav-rightnext {
-    display: block;
+      display: block;
     }
+  }
 `;
 
 const activeCategoryStyle = css`
